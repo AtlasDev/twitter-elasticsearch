@@ -1,3 +1,5 @@
+"use strict";
+
 const Twitter = require('twitter');
 const elasticsearch = require('elasticsearch');
 const utils = require('./utils.js');
@@ -10,18 +12,20 @@ let stream = twitterClient.stream('statuses/sample');
 
 stream.on('data', (data) => {
   if(data.id_str && data.text) {
-    let message = utils.parseMessage(data)
+    let message = utils.parseMessage(data);
     elasticClient.create({
       index: config.elasticsearch.index,
       type: 'message',
       id: data.id_str,
-      body: data
+      body: utils.parseMessage(data)
     }, function (err) {
       if(err) {
+        console.error('Elasticsearch errored!');
         console.error(err);
       }
     });
   } else if(data.deleted) {
+    console.log(data.deleted)
     elasticClient.create({
       index: config.elasticsearch.index,
       type: 'deleted',
@@ -29,6 +33,7 @@ stream.on('data', (data) => {
       body: data
     }, function (err) {
       if(err) {
+        console.error('Twitter errored!');
         console.error(err);
       }
     });

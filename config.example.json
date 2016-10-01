@@ -6,6 +6,7 @@
     "access_token_secret": ""
   },
   "elasticsearch": {
-    "host": "localhost:9200"
+    "host": "localhost:9200",
+    "index": "twitter"
   }
 }
