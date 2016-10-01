@@ -1,0 +1,23 @@
+{
+  "name": "twitter-elasticsearch",
+  "version": "0.1.0",
+  "description": "Connect the twitter stream with elasticsearch",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/AtlasDev/twitter-elasticsearch"
+  },
+  "keywords": [
+    "Twitter"
+  ],
+  "author": "Dany Sluijk <dany@atlasdev.nl> (AtlasDev)",
+  "license": "MIT",
+  "dependencies": {
+    "elasticsearch": "^11.0.1",
+    "sentiment": "^2.0.0",
+    "twitter": "^1.4.0"
+  }
+}
