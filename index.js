@@ -12,30 +12,32 @@ let stream = twitterClient.stream('statuses/sample');
 
 stream.on('data', (data) => {
   if(data.id_str && data.text) {
-    let message = utils.parseMessage(data);
-    elasticClient.create({
+    elasticClient.search({
       index: config.elasticsearch.index,
-      type: 'message',
-      id: data.id_str,
-      body: utils.parseMessage(data)
-    }, function (err) {
-      if(err) {
-        console.error('Elasticsearch errored!');
-        console.error(err);
+      type: 'tweets',
+      body: {
+        query: {
+          match: {
+            id: data.id_str
+          }
+        }
       }
-    });
-  } else if(data.deleted) {
-    console.log(data.deleted)
-    elasticClient.create({
-      index: config.elasticsearch.index,
-      type: 'deleted',
-      id: data.id_str,
-      body: data
-    }, function (err) {
-      if(err) {
-        console.error('Twitter errored!');
-        console.error(err);
+    }).then(function (res) {
+      if(res.hits.total == 0) {
+        elasticClient.create({
+          index: config.elasticsearch.index,
+          type: 'tweets',
+          id: data.id_str,
+          body: utils.parseMessage(data)
+        }, function (err) {
+          if(err) {
+            console.error('Elasticsearch errored!');
+            console.error(err);
+          }
+        });
       }
+    }, function (err) {
+      console.error("Error looking up id's", err);
     });
   }
 });

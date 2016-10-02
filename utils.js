@@ -55,11 +55,11 @@ const parseSource = (source) => {
   } else if(source.match(sourceAndroid)) {
     return 'Android';
   } else if(source.match(sourceWP)) {
-    return 'Windows Phone';
+    return 'WindowsPhone';
   } else if(source.match(sourceDesktopWeb)) {
-    return 'Twitter Desktop Web';
+    return 'Desktop';
   } else if(source.match(sourceMobileWeb)) {
-    return 'Twitter Mobile Web';
+    return 'MobileWeb';
   } else if(source.match(sourceTweetDeck)) {
     return 'TweetDeck';
   } else if(source.match(sourceFacebook)) {
